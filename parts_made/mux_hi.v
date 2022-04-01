@@ -1,9 +1,10 @@
-// ----------------------------------------------
-//     Mux ligado ao bloco da multiplicação
-// ----------------------------------------------
+/*
+    MUX_Hi seleciona a saída:
+    - Div
+    - Mult
+*/
 
-
-module mux_mult(
+module mux_div(
     input wire [1:0] selector,
     input wire [31:0] data_0,
     input wire [31:0] data_1,

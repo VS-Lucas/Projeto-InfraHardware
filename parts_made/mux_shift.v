@@ -1,6 +1,8 @@
-// ----------------------------------------------
-//     Mux do valor que vai ser shiftado
-// ----------------------------------------------
+/*
+    MUX_SHIFT seleciona a saída a partir das entradas de:
+    - Reg A
+    - Reg B
+*/
 
 module mux_shift(
     input wire [1:0] selector,

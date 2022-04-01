@@ -1,3 +1,9 @@
+/*
+    MUX_A seleciona a saída:
+    - P+4
+    - Valor do registrador A 
+*/
+
 module mux_A(
     input wire [1:0] selector,
     input wire [31:0] data_0,

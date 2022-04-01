@@ -1,3 +1,11 @@
+/*
+    MUX_ALUOUT seleciona saída:
+    - PC + 4
+    - ALUOut
+    - EPC
+    - Sinal extendido 16-32
+    - Mux que dá entrada na memória 
+*/
 module mux_ALUOut(
     input wire [2:0] selector,
     input wire [31:0] data_0,
@@ -9,7 +17,7 @@ module mux_ALUOut(
     output wire [31:0] data_out
 );
 
-    always @(data_0, or data_1 or ext26_to_28 or EPCOut or sign_ext_out or mux_mem_out or data_out) begin
+    always @(data_0, or data_1 or ext26_to_28 or EPCOut or sign_ext_out or mux_mem_out or selector) begin
         case(selector)
             3'b000 : data_out = data_0
             3'b001 : data_out = data_1

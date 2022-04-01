@@ -1,8 +1,10 @@
-// ----------------------------------------------
-//     Mux que está ligado ao bloco da divisão
-// ----------------------------------------------
+/*
+    MUX_Lo seleciona a saída:
+    - Div
+    - Mult
+*/
 
-module mux_div(
+module mux_mult(
     input wire [1:0] selector,
     input wire [31:0] data_0,
     input wire [31:0] data_1,
