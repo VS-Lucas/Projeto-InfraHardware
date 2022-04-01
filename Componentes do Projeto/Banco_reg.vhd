@@ -116,3 +116,5 @@ ARCHITECTURE behavioral_arch OF Banco_reg IS
 	END PROCESS;
 ------------------------------------------ Fim da Arquitetura 
 END behavioral_arch;
+
+-- Salve
