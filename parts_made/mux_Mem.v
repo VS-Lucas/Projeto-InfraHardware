@@ -7,16 +7,6 @@ module mux_Mem(
     output wire [31:0] data_out
 );
 
-
-// /*
-// data_0 --|
-// data1 -- | -- out1 -- /---
-// reg_a --- |                 | out3---|
-// reg_b --- |  --- out2 --/ ---           |
-// 253------|                              |out5/
-// 254-------|out4 --------------------|        \data_out ->
-// 255 ---------------------------------------|
-// */
     always @(data_0 or data_1 or reg_A or reg_B or selector) begin
         case(selector)
             3'b000 : data_out = data_0
