@@ -15,7 +15,7 @@ module mux_B(
     output wire [31:0] data_out
 );
 
-    always @(data_0 or sign_ext_out or ext_shift_out or selector) begin
+    always @(*) begin
         case(selector)
             3'b00 : data_out = data_0;
             3'b01 : data_out = 32'd4;

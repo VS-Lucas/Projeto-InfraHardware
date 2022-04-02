@@ -28,7 +28,7 @@ module CPU(
     wire [4:0] M_WRREG_out;
     wire [31:0] mux_to_mem;
     wire [31:0] m_A_out;
-    wire [31:0] m_B_out
+    wire [31:0] m_B_out;
     wire [31:0] M_wdata_out;
     wire [31:0] M_ALU_out;
 
@@ -39,7 +39,6 @@ module CPU(
 
     wire PC_w;
     wire ALU_w;
-    wire PC_w;
     wire MEM_w;
     wire IR_w;
     wire RB_w;
@@ -60,15 +59,12 @@ module CPU(
 
     
     wire [31:0] PC_out;
-    wire [31:0] MEM_to_IR;
-
  
 
 
 //-------------------- Fios que registradores ----------------------------- //
     
     wire [31:0] ULA_result;
-    wire [31:0] PC_out;
     wire [31:0] MEM_to_IR;
     wire [31:0] RB_to_A;
     wire [31:0] RB_to_B;
@@ -77,16 +73,15 @@ module CPU(
     wire [31:0] MEM_in;
     wire [31:0] LSize_out;
     wire [31:0] Hi_out;
-    wire [31:0] Lo_out
+    wire [31:0] Lo_out;
     wire [31:0] Shift_out;
     wire [31:0] s_ext_1to32_out;
     wire [31:0] shift_ext_out;
     wire [31:0] signExt_out;
-    wire [31:0] shift_2_out
+    wire [31:0] shift_2_out;
     wire [31:0] ALU_out;
     wire [31:0] ext_26_to_28_out;
     wire [31:0] EPCOut;
-
 
     Registrador          PC_(
         clk,
@@ -235,7 +230,7 @@ module CPU(
         mux_to_mem,
         M_ALU_out
     );
-    
+
     unid_control       UNI_CTRL(
         clk,
         reset,
@@ -258,6 +253,7 @@ module CPU(
         M_selector_B,
         ULA_c,
         ALU_w,
-        M_selector_ALUOut
+        M_selector_ALUOut,
+        reset
     );
 endmodule
