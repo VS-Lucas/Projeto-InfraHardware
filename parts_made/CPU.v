@@ -6,7 +6,8 @@ module CPU(
     input wire reset
 );
 
-// Flags da ULA
+// ------------------------- Flags da ULA ------------------------------ //
+    
     wire Of;
     wire Ng;
     wire Zr;
@@ -14,7 +15,10 @@ module CPU(
     wire Gt;
     wire Lt;
 
+//-----------------------------------------------------------------------//
+
 // ----------------- Sinais de Controle dos mux's --------------------- //
+    
     wire M_selector_writereg;
     wire M_selector_WDATA;
     wire M_selector_A;
@@ -26,11 +30,12 @@ module CPU(
     wire [31:0] m_B_out
     wire [31:0] M_wdata_out;
     wire [31:0] M_ALU_out;
+
 // --------------------------------------------------------------------- //
 
 
 // ----------------- Sinais de controle de 1 bit ----------------------- //
-    
+
     wire PC_w;
     wire ALU_w;
     wire PC_w;
@@ -38,11 +43,13 @@ module CPU(
     wire IR_w;
     wire RB_w;
     wire AB_w; // escreve ao mesmo tempo em A e B
+
 // ---------------------------------------------------------------------- //
 
 
-// sinais de controle com mais de 1 bit
+// ------------------ sinais de controle com mais de 1 bit -------------- //
     wire [2:0] ULA_c;
+// ---------------------------------------------------------------------- //
 
 // IR
     wire [5:0] OPCODE;
