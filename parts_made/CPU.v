@@ -6,7 +6,8 @@ module CPU(
     input wire reset
 );
 
-// Flags da ULA
+// ------------------------- Flags da ULA ------------------------------ //
+    
     wire Of;
     wire Ng;
     wire Zr;
@@ -14,24 +15,41 @@ module CPU(
     wire Gt;
     wire Lt;
 
-// Sinais de controle de 1 bit
+//-----------------------------------------------------------------------//
+
+// ----------------- Sinais de Controle dos mux's --------------------- //
+    
+    wire [1:0] M_selector_writereg;
+    wire [2:0] M_selector_WDATA;
+    wire M_selector_A;
+    wire [1:0] M_selector_B;
+    wire [2:0] M_selector_ALUOut;
+    wire [2:0] M_selector_Memory;
+    wire [4:0] M_WRREG_out;
+    wire [31:0] mux_to_mem;
+    wire [31:0] m_A_out;
+    wire [31:0] m_B_out;
+    wire [31:0] M_wdata_out;
+    wire [31:0] M_ALU_out;
+
+// --------------------------------------------------------------------- //
+
+
+// ----------------- Sinais de controle de 1 bit ----------------------- //
+
     wire PC_w;
+    wire ALU_w;
     wire MEM_w;
     wire IR_w;
     wire RB_w;
-    wire AB_w; // escreve ao mesmo tempo
-    wire M_selector_writereg;
-    wire M_selector_WDATA;
-    wire M_selector_A;
-// sinais de controle com mais de 1 bit
+    wire AB_w; // escreve ao mesmo tempo em A e B
+
+// ---------------------------------------------------------------------- //
+
+
+// ------------------ sinais de controle com mais de 1 bit -------------- //
     wire [2:0] ULA_c;
-
-// Sinais de controles para o MUX
-    wire M_WREG;
-    wire M_ULAA;
-    wire  [1:0] M_ULAB;
-    wire PC_w;
-
+// ---------------------------------------------------------------------- //
 
 // IR
     wire [5:0] OPCODE;
@@ -41,38 +59,29 @@ module CPU(
 
     
     wire [31:0] PC_out;
-    wire [31:0] MEM_to_IR;
+ 
 
- // data wires with less than 32 bits   
-    wire [4:0] M_WRREG_out;
 
-//data wire with 32 bits
+//-------------------- Fios que registradores ----------------------------- //
+    
     wire [31:0] ULA_result;
-    wire [31:0] PC_out;
     wire [31:0] MEM_to_IR;
     wire [31:0] RB_to_A;
     wire [31:0] RB_to_B;
     wire [31:0] A_out;
     wire [31:0] B_out;
-    wire [31:0] SXTND_out;
-    wire [31:0] ULAA_in;
-    wire [31:0] ULAB_in;
-    wire [31:0] mux_to_mem;
     wire [31:0] MEM_in;
     wire [31:0] LSize_out;
     wire [31:0] Hi_out;
+    wire [31:0] Lo_out;
     wire [31:0] Shift_out;
     wire [31:0] s_ext_1to32_out;
     wire [31:0] shift_ext_out;
-    wire [31:0] m_A_out;
     wire [31:0] signExt_out;
-    wire [31:0] shift_2_out
+    wire [31:0] shift_2_out;
     wire [31:0] ALU_out;
     wire [31:0] ext_26_to_28_out;
     wire [31:0] EPCOut;
-    wire [31:0]
-    wire [31:0]
-
 
     Registrador          PC_(
         clk,
@@ -92,7 +101,7 @@ module CPU(
     );
 
     Memoria            Mem_(
-        PC_w,
+        mux_to_mem,
         clk,
         MEM_w,
         MEM_in,
@@ -117,6 +126,7 @@ module CPU(
         IMEDIATO,
         M_WRREG_out // ver quais desses precisa instanciar la em cima
     );
+
     mux_writeData      M_WDATA_(
         M_selector_WDATA,
         ULA_out,
@@ -157,24 +167,28 @@ module CPU(
         B_out
     );
 
-    mux_A      M_A(
+    
+    mux_A            M_A(
         M_selector_A,
         PC_out,
         A_out,
         m_A_out
     );
 
-    sign_extd     Sign_ext_(
+    
+    sign_extd         Sign_ext_(
         IMEDIATO,
         signExt_out
     );
     
-    shift_lf_2   Shift_2(
+    
+    shift_lf_2        Shift_2(
         signExt_out,
         shift_2_out
     );
 
-    mux_B M_B(
+    
+    mux_B             M_B(
         M_selector_B,
         B_out,
         signExt_out,
@@ -182,7 +196,8 @@ module CPU(
         m_B_out
     );
 
-    ula32 ULA_LA(
+    
+    ula32           ULA_LA(
         m_A_out,
         m_B_out,
         ULA_c,
@@ -195,15 +210,17 @@ module CPU(
         Lt
     );
 
-    Registrador REG_ALUOut(
+    
+    Registrador     REG_ALUOut(
         clk,
         reset,
-        ULA_w,
+        ALU_w,
         ULA_result,
         ALU_out
     );
 
-    mux_ALUOut         M_ALUOut(
+    
+    mux_ALUOut     M_ALUOut(
         M_selector_ALUOut,
         ULA_result,
         ALU_out,
@@ -214,4 +231,29 @@ module CPU(
         M_ALU_out
     );
 
-
+    unid_control       UNI_CTRL(
+        clk,
+        reset,
+        Of,
+        Ng,
+        Zr,
+        Eq,
+        Gt,
+        Lt,
+        OPCODE,
+        PC_w,
+        M_selector_Memory,
+        MEM_w,
+        IR_w,
+        M_selector_writereg,
+        M_selector_WDATA,
+        RB_w,
+        AB_w,
+        M_selector_A,
+        M_selector_B,
+        ULA_c,
+        ALU_w,
+        M_selector_ALUOut,
+        reset
+    );
+endmodule
