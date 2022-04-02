@@ -63,10 +63,10 @@ module unidade_controle(
                 M_selector_writereg = 1'b0;
                 M_selector_A = 1'b0;
                 M_selector_B = 2'b00;
-                M_selector_Memory = 3'000;
-                M_selector_ALUOut = 3'000;
-                M_selector_WDATA = 3'000;
-                ALU_w = 1'0;
+                M_selector_Memory = 3'b000;
+                M_selector_ALUOut = 3'b000;
+                M_selector_WDATA = 3'b000;
+                ALU_w = 1'b0;
                 reset_out = 1'b1;
                 // setar counter para a proxima operação
                 counter = 3'b000;
