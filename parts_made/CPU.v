@@ -106,7 +106,7 @@ module CPU(
     );
 
     Memoria            Mem_(
-        PC_w,
+        mux_to_mem,
         clk,
         MEM_w,
         MEM_in,
@@ -235,5 +235,28 @@ module CPU(
         mux_to_mem,
         M_ALU_out
     );
-
+    unid_control       UNI_CTRL(
+        clk,
+        reset,
+        Of,
+        Ng,
+        Zr,
+        Eq,
+        Gt,
+        Lt,
+        OPCODE,
+        PC_w,
+        M_selector_Memory,
+        MEM_w,
+        IR_w,
+        M_selector_writereg,
+        M_selector_WDATA,
+        RB_w,
+        AB_w,
+        M_selector_A,
+        M_selector_B,
+        ULA_c,
+        ALU_w,
+        M_selector_ALUOut,
+    );
 endmodule
