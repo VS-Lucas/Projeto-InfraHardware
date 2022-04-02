@@ -19,7 +19,7 @@ module mux_writeData(
             3'b100 : data_out = data_4;
             3'b101 : data_out = data_5;
             3'b110 : data_out = data_6;
-            3'b111 : data_out = 32'd227
+            3'b111 : data_out = 32'd227;
         endcase
     end
 
