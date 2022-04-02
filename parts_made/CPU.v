@@ -19,11 +19,12 @@ module CPU(
 
 // ----------------- Sinais de Controle dos mux's --------------------- //
     
-    wire M_selector_writereg;
-    wire M_selector_WDATA;
+    wire [1:0] M_selector_writereg;
+    wire [2:0] M_selector_WDATA;
     wire M_selector_A;
-    wire M_selector_B;
-    wire M_selector_ALUOut;
+    wire [1:0] M_selector_B;
+    wire [2:0] M_selector_ALUOut;
+    wire [2:0] M_selector_Memory;
     wire [4:0] M_WRREG_out;
     wire [31:0] mux_to_mem;
     wire [31:0] m_A_out;
@@ -235,6 +236,7 @@ module CPU(
         M_ALU_out
     );
 
+<<<<<<< HEAD
 // MÁQUINA DE ESTADOS
 
 reg [1:0] state; // estados
@@ -278,4 +280,6 @@ always @(posedge clk) begin
     end
 end
 
+=======
+>>>>>>> adaed3f5e22690d3860a91edc7a000b4888afc54
 endmodule
