@@ -21,7 +21,7 @@ module CPU(
     
     wire [1:0] M_selector_writereg;
     wire [2:0] M_selector_WDATA;
-    wire [1:0] M_selector_A;
+    wire       M_selector_A;
     wire [1:0] M_selector_B;
     wire [2:0] M_selector_ALUOut;
     wire [2:0] M_selector_Memory;

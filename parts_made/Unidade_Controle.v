@@ -35,15 +35,15 @@ module Unidade_Controle(
     reg [1:0] ESTADO;
 
     //Parâmetros (Constantes)
-        //Principais Estados de Máquina
-        parameter ESTADO_COMUM      = 2'b00;
-        parameter ESTADO_ADD        = 2'b01;
-        parameter ESTADO_ADDI       = 2'b10;
-        parameter ESTADO_RESET      = 2'b11;
-        //Códigos de opcode nomeados
-        parameter ADD               = 6'b000000;
-        parameter ADDI              = 6'b001000;
-        parameter RESET             = 6'b111111;
+    //Principais Estados de Máquina
+    parameter ESTADO_COMUM      = 2'b00;
+    parameter ESTADO_ADD        = 2'b01;
+    parameter ESTADO_ADDI       = 2'b10;
+    parameter ESTADO_RESET      = 2'b11;
+    //Códigos de opcode nomeados
+    parameter ADD               = 6'b000000;
+    parameter ADDI              = 6'b001000;
+    parameter RESET             = 6'b111111;
 
     initial begin
         //valor 227 ou 277 (o monitor esqueceu qual) no registrador 29 ****Lembrar de colocar
@@ -136,7 +136,7 @@ module Unidade_Controle(
                         // M_ULAB     = 2'b01;     //// Modificando aqui
                         // rst_out     = 1'b0;
                         // Colocando o contador para a próxima operação
-                        CONTADOR = CONTADOR + 1;
+                        CONTADOR = CONTADOR + 3'b001;
                     end
                     else if (CONTADOR == 3'b011) begin
                         ESTADO = ESTADO_COMUM;
@@ -166,7 +166,7 @@ module Unidade_Controle(
                         // M_ULAB     = 2'b01;     //// Continua 1
                         // rst_out     = 1'b0;
                         // Colocando o contador para a próxima operação
-                        CONTADOR = CONTADOR + 1;
+                        CONTADOR = CONTADOR + 3'b001;
                     end
                     else if (CONTADOR == 3'b100) begin
                         // Resetando todos os sinais:
@@ -195,7 +195,7 @@ module Unidade_Controle(
                         // M_ULAB     = 2'b00;        //// Modificado aqui
                         // rst_out     = 1'b0;
                         // Colocando o contador para a próxima operação
-                        CONTADOR = CONTADOR + 1;
+                        CONTADOR = CONTADOR + 3'b001;
                     end
                     else if (CONTADOR == 3'b101) begin
                         case (OPCODE)
@@ -235,7 +235,7 @@ module Unidade_Controle(
                         // M_ULAB     = 2'b00;        //// Modificado aqui
                         // rst_out     = 1'b0;
                         // Colocando o contador para a próxima operação
-                        CONTADOR = 3'b000;
+                        //CONTADOR = CONTADOR + 3'b001;
                     end
                 end
                 ESTADO_ADD: begin
@@ -268,7 +268,7 @@ module Unidade_Controle(
                         // M_ULAB      = 2'b00;
                         // rst_out     = 1'b0;
                         // Colocando o contador para a próxima operação
-                        CONTADOR = CONTADOR + 1;
+                        CONTADOR = CONTADOR + 3'b001;
                     end
                     else if (CONTADOR == 3'b001) begin
                         // Colocando Estado Futuro

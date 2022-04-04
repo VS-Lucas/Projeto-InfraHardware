@@ -5,7 +5,7 @@
 */
 
 module mux_A(
-    input wire [1:0] selector,
+    input wire selector,
     input wire [31:0] data_0,
     input wire [31:0] data_1,
     output wire [31:0] data_out
