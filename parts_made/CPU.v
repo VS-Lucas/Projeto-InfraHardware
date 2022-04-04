@@ -21,7 +21,7 @@ module CPU(
     
     wire [1:0] M_selector_writereg;
     wire [2:0] M_selector_WDATA;
-    wire M_selector_A;
+    wire [1:0] M_selector_A;
     wire [1:0] M_selector_B;
     wire [2:0] M_selector_ALUOut;
     wire [2:0] M_selector_Memory;
@@ -82,6 +82,11 @@ module CPU(
     wire [31:0] ALU_out;
     wire [31:0] ext_26_to_28_out;
     wire [31:0] EPCOut;
+    wire [31:0] sign_ext_out;
+
+
+
+    
 
     Registrador          PC_(
         clk,
@@ -120,7 +125,7 @@ module CPU(
         IMEDIATO
     );
    
-    mux_writereg       M_WRREG_(
+    mux_wreg       M_WRREG_(
         M_selector_writereg,
         RT,
         IMEDIATO,
@@ -129,7 +134,7 @@ module CPU(
 
     mux_writeData      M_WDATA_(
         M_selector_WDATA,
-        ULA_out,
+        ALU_out,
         LSize_out,
         Hi_out,
         Lo_out,
@@ -231,7 +236,7 @@ module CPU(
         M_ALU_out
     );
 
-    unid_control       UNI_CTRL(
+    Unidade_Controle       UNI_CTRL(
         clk,
         reset,
         Of,
@@ -256,4 +261,5 @@ module CPU(
         M_selector_ALUOut,
         reset
     );
+
 endmodule
