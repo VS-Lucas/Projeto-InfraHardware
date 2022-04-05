@@ -131,7 +131,7 @@ module CPU(
     mux_wreg       M_WRREG_(
         RegDst,
         RT,
-        RD,
+        IMEDIATO,
         M_WRREG_out // ver quais desses precisa instanciar la em cima
     );
 
