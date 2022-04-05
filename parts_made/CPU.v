@@ -19,12 +19,13 @@ module CPU(
 
 // ----------------- Sinais de Controle dos mux's --------------------- //
     
-    wire [1:0] M_selector_writereg;
-    wire [2:0] M_selector_WDATA;
-    wire       M_selector_A;
-    wire [1:0] M_selector_B;
-    wire [2:0] M_selector_ALUOut;
-    wire [2:0] M_selector_Memory;
+    wire [1:0] RegDst;
+    wire [2:0] MentoReg;
+    wire       AluSrcA;
+    wire [1:0] AluSrcB;
+    wire [2:0] PCSource;
+    wire [2:0] IorD;
+    
     wire [4:0] M_WRREG_out;
     wire [31:0] mux_to_mem;
     wire [31:0] m_A_out;
@@ -37,13 +38,13 @@ module CPU(
 
 // ----------------- Sinais de controle de 1 bit ----------------------- //
 
-    wire PC_w;
+    wire PCWrite;
     wire ALU_w;
-    wire MEM_w;
-    wire IR_w;
-    wire RB_w;
-    wire AB_w; // escreve ao mesmo tempo em A e B
-
+    wire MEMWrite;
+    wire IRWrite;
+    wire RegWrite;
+    wire AWrite;
+    wire BWrite;
 // ---------------------------------------------------------------------- //
 
 
@@ -55,6 +56,7 @@ module CPU(
     wire [5:0] OPCODE;
     wire [4:0] RS;
     wire [4:0] RT;
+    wire [4:0] RD;
     wire [15:0] IMEDIATO;
 
     
@@ -65,7 +67,7 @@ module CPU(
 //-------------------- Fios que registradores ----------------------------- //
     
     wire [31:0] ULA_result;
-    wire [31:0] MEM_to_IR;
+    wire [31:0] MemOut;
     wire [31:0] RB_to_A;
     wire [31:0] RB_to_B;
     wire [31:0] A_out;
@@ -83,6 +85,7 @@ module CPU(
     wire [31:0] ext_26_to_28_out;
     wire [31:0] EPCOut;
     wire [31:0] sign_ext_out;
+    
 
 
 
@@ -91,13 +94,13 @@ module CPU(
     Registrador          PC_(
         clk,
         reset,
-        PC_w,
-        ALU_out,
+        PCWrite,
+        M_ALU_out,
         PC_out
     );
 
     mux_Mem            Mux_M_(
-        M_selector_Memory,
+        IorD,
         PC_out,
         ALU_out,
         A_out,
@@ -108,17 +111,17 @@ module CPU(
     Memoria            Mem_(
         mux_to_mem,
         clk,
-        MEM_w,
+        MEMWrite,
         MEM_in,
-        MEM_to_IR
+        MemOut
     );
 
 
     Instr_Reg          IR_(
         clk,
         reset,
-        IR_w,
-        MEM_to_IR,
+        IRWrite,
+        MemOut,
         OPCODE,
         RS,
         RT,
@@ -126,14 +129,14 @@ module CPU(
     );
    
     mux_wreg       M_WRREG_(
-        M_selector_writereg,
+        RegDst,
         RT,
-        IMEDIATO,
+        RD,
         M_WRREG_out // ver quais desses precisa instanciar la em cima
     );
 
     mux_writeData      M_WDATA_(
-        M_selector_WDATA,
+        MentoReg,
         ALU_out,
         LSize_out,
         Hi_out,
@@ -147,7 +150,7 @@ module CPU(
     Banco_reg        REG_BASE_(
         clk,
         reset,
-        RB_w,
+        RegWrite,
         RS,
         RT,
         M_WRREG_out,    // checar quais tem que ser instanciados la em cima
@@ -159,7 +162,7 @@ module CPU(
     Registrador      A_(
         clk,
         reset,
-        AB_w,      // checar o que deve ser instanciado 
+        AWrite,      // checar o que deve ser instanciado 
         RB_to_A,
         A_out
     );
@@ -167,14 +170,14 @@ module CPU(
     Registrador      B_(
         clk,
         reset,
-        AB_w,      // checar o que deve ser instanciado 
+        BWrite,      // checar o que deve ser instanciado 
         RB_to_B,
         B_out
     );
 
     
     mux_A            M_A(
-        M_selector_A,
+        AluSrcA,
         PC_out,
         A_out,
         m_A_out
@@ -194,7 +197,7 @@ module CPU(
 
     
     mux_B             M_B(
-        M_selector_B,
+        AluSrcB,
         B_out,
         signExt_out,
         shift_2_out,
@@ -226,7 +229,7 @@ module CPU(
 
     
     mux_ALUOut     M_ALUOut(
-        M_selector_ALUOut,
+        PCSource,
         ULA_result,
         ALU_out,
         ext_26_to_28_out, //OBS MUDAR ISSO AQ
@@ -246,19 +249,20 @@ module CPU(
         Gt,
         Lt,
         OPCODE,
-        PC_w,
-        M_selector_Memory,
-        MEM_w,
-        IR_w,
-        M_selector_writereg,
-        M_selector_WDATA,
-        RB_w,
-        AB_w,
-        M_selector_A,
-        M_selector_B,
+        PCWrite,
+        IorD,
+        MEMWrite,
+        IRWrite,
+        RegDst,
+        MentoReg,
+        RegWrite,
+        AWrite,
+        BWrite,
+        AluSrcA,
+        AluSrcB,
         ULA_c,
         ALU_w,
-        M_selector_ALUOut,
+        PCSource,
         reset
     );
 
