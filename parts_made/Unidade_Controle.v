@@ -1,3 +1,6 @@
+//asdasdasfasd
+
+
 module Unidade_Controle(
     input wire                  clk,
     input wire                  reset,
@@ -92,11 +95,11 @@ module Unidade_Controle(
 
     always @(posedge clk) begin
         if (reset == 1'b1) begin
-            //if (ESTADO != ESTADO_RESET) begin
-                ESTADO = fetch;
+            if (ESTADO != ESTADO_RESET) begin
+                ESTADO = ESTADO_RESET;
                 // up --------
-                RegDst = 2'b10;      // *
-                MemtoReg = 3'd7;   // *
+                RegDst = 2'b01;      // *
+                MemtoReg = 3'b111;     // *
                 RegWrite = 1'b1;     // *
                 //-------------
                 PCWrite = 1'b0;
@@ -111,6 +114,26 @@ module Unidade_Controle(
 
                 reset_out = 1'b1;
                 CONTADOR = 5'b00000;
+            end else begin
+                ESTADO = fetch;
+                // up --------
+                RegDst = 2'b01;      // *
+                MemtoReg = 3'b111;     // *
+                RegWrite = 1'b1;     // *
+                //-------------
+                PCWrite = 1'b0;
+                MEMWrite = 1'b0;
+                IRWrite = 1'b0;
+                AWrite = 1'b0;
+                BWrite = 1'b0;
+                ALU_w = 1'b0;
+                EPCWrite = 1'b0;
+                HiWrite = 1'b0;
+                LoWrite = 1'b0;
+
+                reset_out = 1'b0;
+                CONTADOR = 5'b00000;
+            end
         end else begin
             case (ESTADO)
                 fetch: begin

@@ -10,14 +10,14 @@
 
 module mux_wreg(
     input wire [1:0] selector,
-    input wire [4:0] data_0, //instruction [20..16]
-    input wire [15:0] data_3, //instruction [15..11]
+    input wire [4:0] data_0,
+    input wire [15:0] data_3, 
     output wire [4:0] data_out
 );
+    //    01
+    wire [31:0] out1, out2;
 
-    wire [4:0] out1, out2;
-
-    assign out1 = (selector[0]) ? 5'd29 : data_0;
+    assign out1 = (selector[0]) ? 32'b000000000000000000000000000011101 : data_0;
     assign out2 = (selector[0]) ? data_3[15:11] : 5'd31;
     assign data_out  = (selector[1]) ? out2 : out1;
 
