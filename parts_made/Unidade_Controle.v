@@ -96,7 +96,7 @@ module Unidade_Controle(
                 ESTADO = fetch;
                 // up --------
                 RegDst = 2'b10;      // *
-                MemtoReg = 3'b111;   // *
+                MemtoReg = 3'd7;   // *
                 RegWrite = 1'b1;     // *
                 //-------------
                 PCWrite = 1'b0;
@@ -109,7 +109,7 @@ module Unidade_Controle(
                 HiWrite = 1'b0;
                 LoWrite = 1'b0;
 
-                reset_out = 1'b0;
+                reset_out = 1'b1;
                 CONTADOR = 5'b00000;
         end else begin
             case (ESTADO)
@@ -193,7 +193,7 @@ module Unidade_Controle(
                             ADD: begin
                                 ESTADO = ESTADO_ADD;
                             end
-                            
+
                             // ADDI: begin
                             //     ESTADO = ESTADO_ADDI;
                             // end
