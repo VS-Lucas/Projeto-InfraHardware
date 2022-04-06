@@ -25,8 +25,12 @@ module Unidade_Controle(
     output reg [2:0] ULA_c,
     output reg       ALU_w,
     output reg [2:0] PCSource,
+    output reg EPCWrite,
+    output reg HiSel,
+    output reg HiWrite,
+    output reg LoSel,
+    output reg LoWrite,
     output reg reset_out
-
 );
 
     //reg variáveis internas
@@ -57,86 +61,76 @@ module Unidade_Controle(
 
     always @(posedge clk) begin
         if (reset == 1'b1) begin
-            if (ESTADO != ESTADO_RESET) begin
-                ESTADO = ESTADO_RESET;
-
-                PCWrite = 1'b0;
-                IorD = 3'b000;
-                MEMWrite = 1'b0;
-                IRWrite = 1'b0;
+            //if (ESTADO != ESTADO_RESET) begin
+                ESTADO = fetch;
+                // up --------
                 RegDst = 2'b10;      // *
                 MemtoReg = 3'b111;   // *
                 RegWrite = 1'b1;     // *
-                AWrite = 1'b0;
-                BWrite = 1'b0;
-                AluSrcA = 1'b0;
-                AluSrcB = 2'b00;
-                ULA_c = 3'b000;
-                ALU_w = 1'b0;
-                PCSource = 3'b000;
-                reset_out = 1'b1;    // *
-                // Colocando o contador para a próxima operação
-                CONTADOR = 5'b00000;
-            
-            end else begin
-                ESTADO = fetch;
-
+                //-------------
                 PCWrite = 1'b0;
-                IorD = 3'b000;
                 MEMWrite = 1'b0;
                 IRWrite = 1'b0;
-                RegDst = 2'b10;      // <-
-                MemtoReg = 3'b111;   // <-
-                RegWrite = 1'b1;     // <-
                 AWrite = 1'b0;
                 BWrite = 1'b0;
-                AluSrcA = 1'b0;
-                AluSrcB = 2'b00;
-                ULA_c = 3'b000;
                 ALU_w = 1'b0;
-                PCSource = 3'b000;
-                reset_out = 1'b0;    // **
-                // Colocando o contador para a próxima operação
+
+                reset_out = 1'b0;
                 CONTADOR = 5'b00000;
-            end
+            //end
+            // end else begin
+            //     ESTADO = fetch;
+
+            //     PCWrite = 1'b0;
+            //     IorD = 3'b000;
+            //     MEMWrite = 1'b0;
+            //     IRWrite = 1'b0;
+            //     RegDst = 2'b10;      // <-
+            //     MemtoReg = 3'b111;   // <-
+            //     RegWrite = 1'b1;     // <-
+            //     AWrite = 1'b0;
+            //     BWrite = 1'b0;
+            //     AluSrcA = 1'b0;
+            //     AluSrcB = 2'b00;
+            //     ULA_c = 3'b000;
+            //     ALU_w = 1'b0;
+            //     PCSource = 3'b000;
+            //     reset_out = 1'b0;    // **
+            //     // Colocando o contador para a próxima operação
+            //     CONTADOR = 5'b00000;
+            // end
         end else begin
             case (ESTADO)
                 fetch: begin
                     if (CONTADOR == 5'b00000 || CONTADOR == 5'b00001 || CONTADOR == 5'b00010) begin
                         ESTADO = fetch;
+                        
                         PCWrite = 1'b0;
                         IorD = 3'b000;   // <-
                         MEMWrite = 1'b0;  // <-
                         IRWrite = 1'b0;
-                        RegDst = 2'b00;
-                        MemtoReg = 3'b000;
                         RegWrite = 1'b0;
                         AWrite = 1'b0;
                         BWrite = 1'b0;
                         AluSrcA = 1'b0; // <-
                         AluSrcB = 2'b01;  // <-
                         ULA_c = 3'b001;   // <-
-                        ALU_w = 1'b0;
+                        ALU_w = 1'b1;
                         PCSource = 3'b000;  // <-
                         reset_out = 1'b0;
 
                         CONTADOR = CONTADOR + 5'b00001;
                     end else begin
                         ESTADO = decoder;
+                        
+                        PCSource = 3'b000;  // <-
                         PCWrite = 1'b1;   // <-
-                        IorD = 3'b000;
                         MEMWrite = 1'b0;
                         IRWrite = 1'b1;   // <-
-                        RegDst = 2'b00;     
-                        MemtoReg = 3'b000;   
                         RegWrite = 1'b0;
                         AWrite = 1'b0;
                         BWrite = 1'b0;
-                        AluSrcA = 1'b0;  // <-
-                        AluSrcB = 2'b01;   // <-
-                        ULA_c = 3'b001;
                         ALU_w = 1'b0;
-                        PCSource = 3'b000;  // <-
                         reset_out = 1'b0;
 
                         CONTADOR = 5'b00000;
@@ -146,37 +140,27 @@ module Unidade_Controle(
                     if (CONTADOR == 5'b00000) begin
                         // Resetando todos os sinais:
                         PCWrite = 1'b0;
-                        IorD = 3'b000;
                         MEMWrite = 1'b0;
                         IRWrite = 1'b0;
-                        RegDst = 2'b00;
-                        MemtoReg = 3'b000;
                         RegWrite = 1'b0;
-                        AWrite = 1'b1;  //  <-
-                        BWrite = 1'b1; // <-
+                        AWrite = 1'b0;  
+                        BWrite = 1'b0;
                         AluSrcA = 1'b0;  // <-
                         AluSrcB = 2'b11; // <-
                         ULA_c = 3'b001;   // <-
                         ALU_w = 1'b1; // <-
-                        PCSource = 3'b000 ;
                         reset_out = 1'b0;
 
                         CONTADOR = CONTADOR + 5'b00001;
                     end else if (CONTADOR == 5'b00001) begin
+                       
                         PCWrite = 1'b0;
-                        IorD = 3'b000;
                         MEMWrite = 1'b0;
                         IRWrite = 1'b0;
-                        RegDst = 2'b00;
-                        MemtoReg = 3'b000;
                         RegWrite = 1'b0;
                         AWrite = 1'b1;  // <-
                         BWrite = 1'b1; // <-
-                        AluSrcA = 1'b0; // <-
-                        AluSrcB = 2'b11; // <-
-                        ULA_c = 3'b001;  // <-
-                        ALU_w = 1'b1; // <-
-                        PCSource = 3'b000;
+                        ALU_w = 1'b0; 
                         reset_out = 1'b0;
                     
                         CONTADOR = 5'b00000;
@@ -200,11 +184,8 @@ module Unidade_Controle(
                         ESTADO = ESTADO_ADD;
                         
                         PCWrite = 1'b0;
-                        IorD = 3'b000;
                         MEMWrite = 1'b0;
                         IRWrite = 1'b0;
-                        RegDst = 2'b00;
-                        MemtoReg = 3'b000;
                         RegWrite = 1'b0;
                         AWrite = 1'b0;
                         BWrite = 1'b0;
@@ -212,7 +193,6 @@ module Unidade_Controle(
                         AluSrcB = 2'b00; // <-
                         ULA_c = 3'b001; // <-
                         ALU_w = 1'b1;  // <-
-                        PCSource = 3'b000;
                         reset_out = 1'b0;
 
                         CONTADOR = CONTADOR + 5'b00001;
@@ -223,7 +203,6 @@ module Unidade_Controle(
                         // Colocando Estado Futuro
                         ESTADO = fetch;
                         PCWrite = 1'b0;
-                        IorD = 3'b000;
                         MEMWrite = 1'b0;
                         IRWrite = 1'b0;
                         RegDst = 2'b11;   // <-
@@ -231,11 +210,7 @@ module Unidade_Controle(
                         RegWrite = 1'b1;   // <-
                         AWrite = 1'b0;
                         BWrite = 1'b0;
-                        AluSrcA = 1'b0;
-                        AluSrcB = 2'b00;
-                        ULA_c = 3'b000;
                         ALU_w = 1'b0;
-                        PCSource = 3'b000;
                         reset_out = 1'b0;
 
                         CONTADOR = 5'b00000;

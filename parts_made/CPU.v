@@ -25,7 +25,9 @@ module CPU(
     wire [1:0] AluSrcB;
     wire [2:0] PCSource;
     wire [2:0] IorD;
-    
+    wire HiSel;
+    wire LoSel;
+
     wire [4:0] M_WRREG_out;
     wire [31:0] mux_to_mem;
     wire [31:0] m_A_out;
@@ -45,6 +47,9 @@ module CPU(
     wire RegWrite;
     wire AWrite;
     wire BWrite;
+    wire EPCWrite;
+    wire HiWrite;
+    wire LoWrite;
 // ---------------------------------------------------------------------- //
 
 
@@ -56,7 +61,7 @@ module CPU(
     wire [5:0] OPCODE;
     wire [4:0] RS;
     wire [4:0] RT;
-    wire [4:0] RD;
+    //wire [4:0] RD;
     wire [15:0] IMEDIATO;
 
     
@@ -85,6 +90,12 @@ module CPU(
     wire [31:0] ext_26_to_28_out;
     wire [31:0] EPCOut;
     wire [31:0] sign_ext_out;
+    wire [31:0] DivHi_Out;
+    wire [31:0] MultHi_Out;
+    wire [31:0] M_Hi_Out;
+    wire [31:0] DivLo_Out;
+    wire [31:0] MultLo_Out;
+    wire [31:0] M_Lo_Out;
     
 
 
@@ -238,7 +249,43 @@ module CPU(
         mux_to_mem,
         M_ALU_out
     );
+    
+    Registrador EPC_(
+        clk,
+        reset,
+        EPCWrite,
+        ULA_result,
+        EPCOut
+    );
+    
+    mux_hi M_Hi(
+        HiSel,
+        DivHi_Out,
+        MultHi_Out,
+        M_Hi_Out
+    );
 
+    Registrador Hi_(
+        clk,
+        reset,
+        HiWrite,
+        Hi_out
+    );
+
+    mux_lo M_Lo(
+        LoSel,
+        DivLo_Out,
+        MultLo_Out,
+        M_Lo_Out
+    );
+
+    Registrador Lo(
+        clk,
+        reset,
+        LoWrite,
+        M_Lo_Out,
+        Lo_out
+    );
     Unidade_Controle       UNI_CTRL(
         clk,
         reset,
@@ -263,7 +310,12 @@ module CPU(
         ULA_c,
         ALU_w,
         PCSource,
-        reset
+        EPCWrite,
+        HiSel,
+        HiWrite,
+        LoSel,
+        LoWrite,
+        reset_out
     );
 
 endmodule
