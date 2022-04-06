@@ -15,7 +15,7 @@ module mux_wreg(
     output wire [4:0] data_out
 );
 
-    wire [31:0] out1, out2;
+    wire [4:0] out1, out2;
 
     assign out1 = (selector[0]) ? 5'd29 : data_0;
     assign out2 = (selector[0]) ? data_3[15:11] : 5'd31;

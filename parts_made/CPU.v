@@ -269,6 +269,7 @@ module CPU(
         clk,
         reset,
         HiWrite,
+        M_Hi_Out,
         Hi_out
     );
 
