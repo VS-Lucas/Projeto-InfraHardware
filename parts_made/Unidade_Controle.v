@@ -193,7 +193,10 @@ module Unidade_Controle(
                             ADD: begin
                                 ESTADO = ESTADO_ADD;
                             end
-
+                            AND: begin
+                                ESTADO = ESTADO_AND;
+                            end
+                            
                             // ADDI: begin
                             //     ESTADO = ESTADO_ADDI;
                             // end
