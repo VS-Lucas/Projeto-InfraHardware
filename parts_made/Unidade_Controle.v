@@ -551,6 +551,50 @@ module Unidade_Controle(
 
                     CONTADOR = 5'b00000;
                 end
+                ESTADO_SUB: begin
+                    if (CONTADOR == 5'b00000) begin
+                        // Colocando Estado Futuro
+                        ESTADO = ESTADO_SUB;
+                        
+                        PCWrite = 1'b0;
+                        MEMWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        AluSrcA = 1'b1; // <-
+                        AluSrcB = 2'b00; // <-
+                        ULA_c = 3'b010; // <-  010 == subtracao
+                        ALU_w = 1'b1;  // <-
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        // 
+
+                        CONTADOR = CONTADOR + 5'b00001;
+                    end
+
+                    //DOIS CICLOS PARA ESCREVER NO BANCO DE REGISTRADORES
+                    else if (CONTADOR == 5'b00001) begin
+                        // Colocando Estado Futuro
+                        ESTADO = fetch;
+                        PCWrite = 1'b0;
+                        MEMWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        RegDst = 2'b11;   // <-
+                        MemtoReg = 3'b000;  // <-
+                        RegWrite = 1'b1;   // <-
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        // 
+
+                        CONTADOR = 5'b00000;
+                    end
+                end
                 
                 // ESTADO_RESET: begin
                 //     if (CONTADOR == 5'b00000) begin
