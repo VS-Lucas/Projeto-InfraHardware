@@ -287,6 +287,7 @@ module CPU(
         M_Lo_Out,
         Lo_out
     );
+
     Unidade_Controle       UNI_CTRL(
         clk,
         reset,
@@ -297,6 +298,7 @@ module CPU(
         Gt,
         Lt,
         OPCODE,
+        IMEDIATO,
         PCWrite,
         IorD,
         MEMWrite,
@@ -316,7 +318,6 @@ module CPU(
         HiWrite,
         LoSel,
         LoWrite,
-        reset_out
     );
 
 endmodule
