@@ -221,9 +221,9 @@ module CPU(
         m_B_out,
         ULA_c,
         ULA_result,
-        Of,
-        Ng,
-        Zr,
+        Of, // overflow
+        Ng, // negativo
+        Zr, // zero
         Eq,
         Gt,
         Lt
@@ -317,7 +317,7 @@ module CPU(
         HiSel,
         HiWrite,
         LoSel,
-        LoWrite,
+        LoWrite
     );
 
 endmodule
