@@ -6,7 +6,9 @@ module LSize (
     
     always @(*) begin
         case(sel)
-            2'b11: data_out = mdr_out;
+            2'b00: data_out = mdr_out;
+            2'b01: data_out = {16'b0, mdr_out[15:0]};
+            2'b10: data_out = {31'b0, mdr_out[7:0]}
         endcase
     end
     
