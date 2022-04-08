@@ -1,6 +1,3 @@
-//asdasdasfasd
-
-
 module Unidade_Controle(
     input wire                  clk,
     input wire                  reset,
@@ -487,6 +484,46 @@ module Unidade_Controle(
                         CONTADOR = 5'b00000;
                     end
                 end
+                ESTADO_ADDI: begin
+                    if(CONTADOR == 5'b000000)begin
+                        AluSrcA = 1'b1; // <--
+                        AluSrcB = 2'b10; //<-
+                        ULA_c   = 3'b001; // <-
+                        ALU_w = 1'b1; // <-
+
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        MEMWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        // 
+                        
+                        ESTADO = ESTADO_ADDI;
+                        CONTADOR = CONTADOR + 5'b00001;
+
+                    end else begin
+                        ESTADO = fetch;
+                        PCWrite = 1'b0;
+                        MEMWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        RegDst = 2'b00;   // <-
+                        MemtoReg = 3'b000;  // <-
+                        RegWrite = 1'b1;   // <-
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        // 
+
+                        CONTADOR = 5'b00000;
+                    end
+                end
                 // ESTADO_DIV: begin
                     
                 // end
@@ -595,6 +632,9 @@ module Unidade_Controle(
                         CONTADOR = 5'b00000;
                     end
                 end
+
+
+
                 
                 // ESTADO_RESET: begin
                 //     if (CONTADOR == 5'b00000) begin
