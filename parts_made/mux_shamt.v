@@ -3,12 +3,19 @@ module mux_shamt (
     input wire [31:0] data_0,
     input wire [15:0] data_1,
     input wire [31:0] data_2,
-    output wire [4:0] data_out
+    output reg [4:0] data_out
 );
-    wire [4:0] out1;
+
+    always @(*) begin
+        case(selector)
+            2'b00 : data_out = data_0[4:0];
+            2'b01 : data_out = data_1[10:6];
+            2'b10 : data_out = data_2[4:0]; //VERIFICAR COM ANTONIO
+        endcase
+    end
 
 
-    assign out1 = (selector[0]) ? data_1[10:6] : data_0[4:0];
-    assign data_out = (selector[1]) ? data_2[4:0] : out1; // PRECISA SER REVISADO A SAÍDA DO MDR QUE ENTRA NESSE MUX
+    // assign out1 = (selector[0]) ? data_1[10:6] : data_0[4:0];
+    // assign data_out = (selector[1]) ? data_2[4:0] : out1; // PRECISA SER REVISADO A SAÍDA DO MDR QUE ENTRA NESSE MUX
 
 endmodule
