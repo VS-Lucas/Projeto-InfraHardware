@@ -22,7 +22,7 @@ module CPU(
     wire [1:0] RegDst;
     wire [2:0] MentoReg;
     wire [1:0] AluSrcA;
-    wire [1:0] AluSrcB;
+    wire [2:0] AluSrcB;
     wire [2:0] PCSource;
     wire [2:0] IorD;
     wire HiSel;
@@ -93,7 +93,6 @@ module CPU(
     wire [31:0] signExt_out;
     wire [31:0] shift_2_out;
     wire [31:0] ALU_out;
-    wire [31:0] ext_26_to_28_out;
     wire [31:0] EPCOut;
     wire [31:0] sign_ext_out;
     wire [31:0] DivHi_Out;
@@ -107,7 +106,7 @@ module CPU(
     wire [31:0] M_shift_out;
     wire [4:0] M_shamt_out;
     wire [31:0] RegDesloc_out;
-    wire [31:0] Shift_16_ext_32_out;
+    wire [31:0] Shift2_26_ext_32_pc_out;
     
 
 
@@ -224,7 +223,9 @@ module CPU(
     );
 
     shift2_26_to_28_pc Shift2_26_ext_32_pc_(
-        {RS,RT,IMEDIATO},
+        RS,
+        RT,
+        IMEDIATO,
         PC_out,
         Shift2_26_ext_32_pc_out
     );
