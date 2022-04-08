@@ -3,6 +3,6 @@ module shift_16_ext_32 (
     output wire [31:0] data_out
 );
     
-    assign data_out = {16'b0 , imediato};
+    assign data_out = {imediato, 16'b0};
 
 endmodule
