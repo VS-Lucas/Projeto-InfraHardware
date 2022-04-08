@@ -21,13 +21,14 @@ module CPU(
     
     wire [1:0] RegDst;
     wire [2:0] MentoReg;
-    wire       AluSrcA;
+    wire [1:0] AluSrcA;
     wire [1:0] AluSrcB;
     wire [2:0] PCSource;
     wire [2:0] IorD;
     wire HiSel;
     wire LoSel;
-
+    wire ShiftSrc;
+    wire [1:0] AmountCrtl;
     wire [4:0] M_WRREG_out;
     wire [31:0] mux_to_mem;
     wire [31:0] m_A_out;
@@ -50,11 +51,16 @@ module CPU(
     wire EPCWrite;
     wire HiWrite;
     wire LoWrite;
+    wire MDRWrite;
+    
 // ---------------------------------------------------------------------- //
 
 
 // ------------------ sinais de controle com mais de 1 bit -------------- //
     wire [2:0] ULA_c;
+    wire [1:0] LControl;
+    wire [2:0] ShiftCtrl;
+
 // ---------------------------------------------------------------------- //
 
 // IR
@@ -96,6 +102,12 @@ module CPU(
     wire [31:0] DivLo_Out;
     wire [31:0] MultLo_Out;
     wire [31:0] M_Lo_Out;
+    wire [31:0] sign_extd1_32_out;
+    wire [31:0] MDR_out;
+    wire [31:0] M_shift_out;
+    wire [4:0] M_shamt_out;
+    wire [31:0] RegDesloc_out;
+    wire [31:0] Shift_16_ext_32_out;
     
 
 
@@ -152,9 +164,9 @@ module CPU(
         LSize_out,
         Hi_out,
         Lo_out,
-        Shift_out,
+        RegDesloc_out,
         s_ext_1to32_out, //obs
-        shift_ext_out,
+        Shift_16_ext_32_out,
         M_wdata_out
     );
 
@@ -191,10 +203,15 @@ module CPU(
         AluSrcA,
         PC_out,
         A_out,
+        MDR_out,
         m_A_out
     );
 
-    
+    shift_16_ext_32 Shift_16_ext_32_(
+        IMEDIATO,
+        Shift_16_ext_32_out
+    );
+
     sign_extd         Sign_ext_(
         IMEDIATO,
         signExt_out
@@ -206,6 +223,11 @@ module CPU(
         shift_2_out
     );
 
+    shift2_26_to_28_pc Shift2_26_ext_32_pc_(
+        {RS,RT,IMEDIATO},
+        PC_out,
+        Shift2_26_ext_32_pc_out
+    );
     
     mux_B             M_B(
         AluSrcB,
@@ -215,7 +237,44 @@ module CPU(
         m_B_out
     );
 
+    mux_shift M_shift(
+        ShiftSrc,
+        A_out,
+        B_out,
+        M_shift_out
+    );
     
+    mux_shamt M_shamt(
+        AmountCrtl,
+        B_out,
+        IMEDIATO,
+        MDR_out,
+        M_shamt_out
+    );
+
+    RegDesloc Reg_Desloc_(
+        clk,
+        reset,
+        ShiftCtrl,
+        M_shamt_out,
+        M_shift_out,
+        RegDesloc_out
+    );
+
+    Registrador MDR_(
+        clk,
+        reset,
+        MDRWrite,
+        MemOut,
+        MDR_out
+    );
+    
+    LSize LSize_(
+        LControl,
+        MDR_out,
+        LSize_out
+    );
+
     ula32           ULA_LA(
         m_A_out,
         m_B_out,
@@ -243,7 +302,7 @@ module CPU(
         PCSource,
         ULA_result,
         ALU_out,
-        ext_26_to_28_out, //OBS MUDAR ISSO AQ
+        Shift2_26_ext_32_pc_out,
         EPCOut,
         sign_ext_out,
         mux_to_mem,
@@ -287,6 +346,10 @@ module CPU(
         M_Lo_Out,
         Lo_out
     );
+    sign_extd1_to_32 sign_extd1_32(
+        Lt,
+        sign_extd1_32_out
+    );
 
     Unidade_Controle       UNI_CTRL(
         clk,
@@ -317,7 +380,12 @@ module CPU(
         HiSel,
         HiWrite,
         LoSel,
-        LoWrite
+        LoWrite,
+        MDRWrite,
+        LControl,
+        ShiftSrc,
+        AmountCrtl,
+        ShiftCtrl
     );
 
 endmodule
