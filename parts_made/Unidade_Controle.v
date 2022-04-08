@@ -22,7 +22,7 @@ module Unidade_Controle(
     output reg       AWrite,
     output reg       BWrite,
     output reg [1:0] AluSrcA,
-    output reg [1:0] AluSrcB,
+    output reg [2:0] AluSrcB,
     output reg [2:0] ULA_c,
     output reg       ALU_w,
     output reg [2:0] PCSource,
@@ -66,7 +66,7 @@ module Unidade_Controle(
     parameter ESTADO_SUB         = 6'b010011;  // ok
     parameter ESTADO_BREAK       = 6'b010100;  // ok (TESTAR)
     parameter ESTADO_RTE         = 6'b010101;  // ok (TESTAR)
-    parameter ESTADO_ADDM        = 6'b010110;  // 
+    parameter ESTADO_ADDM        = 6'b010110;  // ok (TESTAR)
     //----------------------------------------//
 
     //--------------- Formato I -------------------//
@@ -76,21 +76,21 @@ module Unidade_Controle(
     parameter ESTADO_BNE         =       6'b011010; // ok
     parameter ESTADO_BLE         =       6'b011011; // ok
     parameter ESTADO_BGT         =       6'b011100; // ok
-    parameter ESTADO_SLLM        =       6'b011101;  
-    parameter ESTADO_LB          =       6'b011110;
-    parameter ESTADO_LH          =       6'b011111;
+    parameter ESTADO_SLLM        =       6'b011101; //
+    parameter ESTADO_LB          =       6'b011110; //
+    parameter ESTADO_LH          =       6'b011111; //
     parameter ESTADO_LUI         =       6'b100000; // ok
-    parameter ESTADO_LW          =       6'b100001;
-    parameter ESTADO_SB          =       6'b100010;
-    parameter ESTADO_SH          =       6'b100011;
-    parameter ESTADO_SLTI        =       6'b100100;
-    parameter ESTADO_SW          =       6'b100101;
+    parameter ESTADO_LW          =       6'b100001; //
+    parameter ESTADO_SB          =       6'b100010; //
+    parameter ESTADO_SH          =       6'b100011; //
+    parameter ESTADO_SLTI        =       6'b100100; //
+    parameter ESTADO_SW          =       6'b100101; //
     parameter ESTADO_RESET       =       6'b111111; // ok
     //--------------------------------------------//
 
     // ----------------- formato J -----------------//
-    parameter ESTADO_J           =       6'b100110; // ok (TESTAR) ? 
-    parameter ESTADO_JAL         =       6'b100111; // ok (TESTAR) ?
+    parameter ESTADO_J           =       6'b100110; // ok
+    parameter ESTADO_JAL         =       6'b100111; // ok
     // ---------------------------------------------//
     
 
@@ -200,7 +200,7 @@ module Unidade_Controle(
                         AWrite = 1'b0;
                         BWrite = 1'b0;
                         AluSrcA = 2'b00; // <-
-                        AluSrcB = 2'b01;  // <-
+                        AluSrcB = 3'b001;  // <-
                         ULA_c = 3'b001;   // <-
                         ALU_w = 1'b1;
                         PCSource = 3'b000;  // <-
@@ -242,7 +242,7 @@ module Unidade_Controle(
                         AWrite = 1'b0;  
                         BWrite = 1'b0;
                         AluSrcA = 2'b00;  // <-
-                        AluSrcB = 2'b11; // <-
+                        AluSrcB = 3'b011; // <-
                         ULA_c = 3'b001;   // <-
                         ALU_w = 1'b1; // <-
                         EPCWrite = 1'b0;
@@ -426,7 +426,7 @@ module Unidade_Controle(
                         AWrite = 1'b0;
                         BWrite = 1'b0;
                         AluSrcA = 2'b01; // <-
-                        AluSrcB = 2'b00; // <-
+                        AluSrcB = 3'b000; // <-
                         ULA_c = 3'b001; // <-
                         ALU_w = 1'b1;  // <-
                         EPCWrite = 1'b0;
@@ -465,7 +465,7 @@ module Unidade_Controle(
                 ESTADO_AND: begin
                     if(CONTADOR == 5'b000000)begin
                         AluSrcA = 2'b01; // <--
-                        AluSrcB = 2'b00; //<-
+                        AluSrcB = 3'b000; //<-
                         ULA_c   = 3'b011; // <-
                         ALU_w = 1'b1; // <-
 
@@ -502,14 +502,13 @@ module Unidade_Controle(
                         MDRWrite = 1'b0;
                         LControl = 2'b00;
                         // 
-
                         CONTADOR = 5'b00000;
                     end
                 end
                 ESTADO_ADDI: begin
                     if(CONTADOR == 5'b000000)begin
                         AluSrcA = 2'b01; // <--
-                        AluSrcB = 2'b10; //<-
+                        AluSrcB = 3'b010; //<-
                         ULA_c   = 3'b001; // <-
                         ALU_w = 1'b1; // <-
 
@@ -546,7 +545,7 @@ module Unidade_Controle(
                         MDRWrite = 1'b0;
                         LControl = 2'b00;
                         // 
-
+            
                         CONTADOR = 5'b00000;
                     end
                 end
@@ -560,7 +559,7 @@ module Unidade_Controle(
                 ESTADO_JR: begin
                     ESTADO = fetch;
                     AluSrcA = 2'b0; // <--
-                    AluSrcB = 2'b00; //<-
+                    AluSrcB = 3'b000; //<-
                     ULA_c   = 3'b000; // <-
                     PCSource = 3'b000; // <-
                     PCWrite = 1'b1; // <-
@@ -630,7 +629,7 @@ module Unidade_Controle(
                         AWrite = 1'b0;
                         BWrite = 1'b0;
                         AluSrcA = 2'b01; // <-
-                        AluSrcB = 2'b00; // <-
+                        AluSrcB = 3'b000; // <-
                         ULA_c = 3'b010; // <-  010 == subtracao
                         ALU_w = 1'b1;  // <-
                         EPCWrite = 1'b0;
@@ -670,7 +669,7 @@ module Unidade_Controle(
                     if (CONTADOR == 5'b00000) begin
                         ESTADO = ESTADO_BEQ;
                         AluSrcA = 2'b01; // <--
-                        AluSrcB = 2'b00; //<-
+                        AluSrcB = 3'b000; //<-
                         ULA_c   = 3'b111; // <-
                         PCWrite = 1'b0;
                         RegWrite = 1'b0;
@@ -700,7 +699,7 @@ module Unidade_Controle(
                     if (CONTADOR == 5'b00000) begin
                         ESTADO = ESTADO_BNE;
                         AluSrcA = 2'b01; // <-
-                        AluSrcB = 2'b00; //<-
+                        AluSrcB = 3'b000; //<-
                         ULA_c   = 3'b111; // <-
                         PCWrite = 1'b0; // <-
                         RegWrite = 1'b0;
@@ -730,7 +729,7 @@ module Unidade_Controle(
                     if (CONTADOR == 5'b00000) begin
                         ESTADO = ESTADO_BLE;
                         AluSrcA = 2'b01; // <--
-                        AluSrcB = 2'b00; //<-
+                        AluSrcB = 3'b000; //<-
                         ULA_c   = 3'b111; // <-
                         PCWrite = 1'b0; // <-
                         RegWrite = 1'b0;
@@ -760,7 +759,7 @@ module Unidade_Controle(
                     if (CONTADOR == 5'b00000) begin
                         ESTADO = ESTADO_BGT;
                         AluSrcA = 2'b01;      // <--
-                        AluSrcB = 2'b00;     //<-
+                        AluSrcB = 3'b000;     //<-
                         ULA_c   = 3'b111;    // <-
                         PCWrite = 1'b0;      // <-
                         RegWrite = 1'b0;
@@ -787,29 +786,31 @@ module Unidade_Controle(
                     end
                 end
                 ESTADO_J: begin   // CHECAR O SHIFT
-                    PCSource = 3'b010; // <-
-                    PCWrite = 1'b1;      // <-
-                    
-                    RegWrite = 1'b0;
-                    MEMWrite = 1'b0;
-                    IRWrite = 1'b0;
-                    AWrite = 1'b0;
-                    BWrite = 1'b0;
-                    ALU_w = 1'b0;
-                    EPCWrite = 1'b0;
-                    HiWrite = 1'b0;
-                    LoWrite = 1'b0;
-                    MDRWrite = 1'b0;
-                    LControl = 2'b00;
+                    if (CONTADOR == 5'b00000) begin
+                        PCSource = 3'b010; // <-
+                        PCWrite = 1'b1;      // <-
+                        
+                        RegWrite = 1'b0;
+                        MEMWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
 
-                    ESTADO = fetch;
-                    CONTADOR = 5'b00000;
+                        ESTADO = fetch;
+                        CONTADOR = 5'b00000;
+                    end
                 end
                 ESTADO_JAL: begin   // OBS: P+4
                     if (CONTADOR == 5'b00000) begin
                         AluSrcA = 2'b00; // <-
-                        AluSrcB = 1'b01; // <-
-                        ULA_c = 3'b001; // <-
+                        AluSrcB = 3'b000; // <-
+                        ULA_c = 3'b000; // <-
                         PCWrite = 1'b0; 
                         RegWrite = 1'b0;
                         MEMWrite = 1'b0;
@@ -872,7 +873,7 @@ module Unidade_Controle(
                 ESTADO_BREAK: begin
                     if (CONTADOR == 5'b00000) begin
                             AluSrcA = 2'b00; // <-
-                            AluSrcB = 2'b01; // <-
+                            AluSrcB = 3'b001; // <-
                             ULA_c = 3'b010; // <-
                             ALU_w = 1'b1; // <-
                             PCSource = 3'b001;  // <-
@@ -895,7 +896,7 @@ module Unidade_Controle(
                 ESTADO_SLT: begin
                     if (CONTADOR == 5'b00000) begin
                         AluSrcA = 2'b01; // <-
-                        AluSrcB = 2'b00; // <-
+                        AluSrcB = 3'b000; // <-
                         ULA_c = 3'b111;  // <-
                         ALU_w = 1'b1; // <-
                         PCWrite = 1'b0;
@@ -950,7 +951,7 @@ module Unidade_Controle(
                         MDRWrite = 1'b0;
                         LControl = 2'b00;
 
-                        CONTADOR = CONTADOR + 5'b00000;
+                        CONTADOR = CONTADOR + 5'b00001;
                         ESTADO = ESTADO_ADDM; 
                     end else if (CONTADOR == 5'b00011) begin
                         
@@ -959,7 +960,7 @@ module Unidade_Controle(
                         RegWrite = 1'b0;
                         MEMWrite = 1'b0;
                         IRWrite = 1'b0;
-                        AWrite = 1'b1; // <-
+                        AWrite = 1'b10;
                         BWrite = 1'b0;
                         ALU_w = 1'b0;
                         EPCWrite = 1'b0;
@@ -967,7 +968,69 @@ module Unidade_Controle(
                         LoWrite = 1'b0;
                         MDRWrite = 1'b1; // <-
                         LControl = 2'b00;
-                    end 
+
+                        CONTADOR = CONTADOR + 5'b00001;
+                        ESTADO = ESTADO_ADDM; 
+                    end else if (CONTADOR == 5'b000100 || CONTADOR == 5'b00101 || CONTADOR == 5'b00110) begin
+                        IorD = 3'b011; // <-
+
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        MEMWrite = 1'b0; // <-
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
+
+                        CONTADOR = CONTADOR + 5'b00001;
+                        ESTADO = ESTADO_ADDM; 
+                    
+                    
+                    end else if(CONTADOR == 5'b00111) begin
+                        AluSrcA = 2'b10; // <-
+                        AluSrcB = 3'b100; // <-
+                        ULA_c = 3'b001; // <-
+
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        MEMWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b1; // <-
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0; 
+                        LControl = 2'b00;
+                        
+                        CONTADOR = CONTADOR + 5'b00001;
+                        ESTADO = ESTADO_ADDM; 
+                    end else begin
+                        
+                        PCWrite = 1'b0;
+                        MEMWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        RegDst = 2'b11;   // <-
+                        MemtoReg = 3'b000;  // <-
+                        RegWrite = 1'b1;   // <-
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
+                        // 
+                        ESTADO = fetch;
+                        CONTADOR = 5'b00000;
+                    end
                 end
                 ESTADO_SLL: begin
                     if(CONTADOR == 5'b00000) begin
@@ -1312,7 +1375,11 @@ module Unidade_Controle(
                     ESTADO = fetch;
                 end
 
+                ESTADO_SW: begin
+                    
 
+
+                end
                 // ESTADO_RESET: begin
                 //     if (CONTADOR == 5'b00000) begin
                 //         //Colocando estado futuro
