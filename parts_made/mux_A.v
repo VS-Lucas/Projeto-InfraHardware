@@ -5,12 +5,19 @@
 */
 
 module mux_A(
-    input wire selector,
+    input wire [1:0] selector,
     input wire [31:0] data_0,
     input wire [31:0] data_1,
-    output wire [31:0] data_out
+    input wire [31:0] data_2,
+    output reg [31:0] data_out
 );
 
-    assign data_out = (selector) ? data_1 : data_0; 
+    always @(*) begin
+        case(selector)
+            2'b00: data_out = data_0;
+            2'b01: data_out = data_1;
+            2'b10: data_out = data_2;
+        endcase
+    end
 
 endmodule
