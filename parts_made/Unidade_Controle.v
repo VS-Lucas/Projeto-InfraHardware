@@ -800,6 +800,26 @@ module Unidade_Controle(
                         CONTADOR = 5'b00000;
                     end
                 end
+                ESTADO_RTE: begin
+                    if (CONTADOR == 5'b00000) begin           
+                        // so ativo o pcwrite e a saida do mux                                   
+                        PCWrite = 1'b1; // <- 
+                        MEMWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;  
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        EPCWrite = 1'b0; // <- estou tirando do epc, n escrevendo
+                        PCSource = 3'b011; // <- saida 3 do mux que vai pra PC 
+
+                        ESTADO = fetch  // so tem 1 ciclo 
+                        CONTADOR = 5'b00000;
+                    end
+                end
                 // ESTADO_RESET: begin
                 //     if (CONTADOR == 5'b00000) begin
                 //         //Colocando estado futuro
