@@ -83,7 +83,7 @@ module Unidade_Controle(
     parameter ESTADO_LW          =       6'b100001; //
     parameter ESTADO_SB          =       6'b100010; //
     parameter ESTADO_SH          =       6'b100011; //
-    parameter ESTADO_SLTI        =       6'b100100; //
+    parameter ESTADO_SLTI        =       6'b100100; // ok
     parameter ESTADO_SW          =       6'b100101; //
     parameter ESTADO_RESET       =       6'b111111; // ok
     //--------------------------------------------//
@@ -110,7 +110,7 @@ module Unidade_Controle(
     parameter FUNCT_SLT         =       6'b101010; // 0x2a
     parameter FUNCT_SRA         =       6'b000011; // 0x3
     parameter FUNCT_SRAV        =       6'b000111; // 0x7
-    parameter FUNCT_SRL         =       6'b000010; // 0x2
+    parameter FUNCT_SRL         =       6'b000010; // 0x2 
     parameter FUNCT_SUB         =       6'b100010; // 0x22
     parameter FUNCT_BREAK       =       6'b001101; // 0xd
     parameter FUNCT_RTE         =       6'b010011; // 0x13
@@ -1375,11 +1375,53 @@ module Unidade_Controle(
                     ESTADO = fetch;
                 end
 
-                ESTADO_SW: begin
-                    
+                ESTADO_SLTI: begin
+                    if(CONTADOR == 5'b00000) begin
+
+                        AluSrcA = 2'b01;
+                        AluSrcB = 3'b010;
+                        ULA_c = 3'b111;
 
 
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        MEMWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
+
+                        CONTADOR = CONTADOR + 5'b00001;
+                        ESTADO = ESTADO_SLTI;
+
+                    end else begin
+                        
+                        RegDst = 2'b00;
+                        MemtoReg = 3'b101;
+                        
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b1; // -> ***
+                        MEMWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
+
+                        CONTADOR = 5'b00000;
+                        ESTADO = fetch;
+                    end
                 end
+
                 // ESTADO_RESET: begin
                 //     if (CONTADOR == 5'b00000) begin
                 //         //Colocando estado futuro
