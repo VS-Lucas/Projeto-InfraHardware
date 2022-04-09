@@ -77,14 +77,14 @@ module Unidade_Controle(
     parameter ESTADO_BLE         =       6'b011011; // ok
     parameter ESTADO_BGT         =       6'b011100; // ok
     parameter ESTADO_SLLM        =       6'b011101; //
-    parameter ESTADO_LB          =       6'b011110; //
-    parameter ESTADO_LH          =       6'b011111; //
+    parameter ESTADO_LB          =       6'b011110; // ok (TESTAR)
+    parameter ESTADO_LH          =       6'b011111; // ok (TESTAR)
     parameter ESTADO_LUI         =       6'b100000; // ok
-    parameter ESTADO_LW          =       6'b100001; //
-    parameter ESTADO_SB          =       6'b100010; //
-    parameter ESTADO_SH          =       6'b100011; //
+    parameter ESTADO_LW          =       6'b100001; // ok (TESTAR)
+    parameter ESTADO_SB          =       6'b100010; // ok (TESTAR)
+    parameter ESTADO_SH          =       6'b100011; // ok (TESTAR)
     parameter ESTADO_SLTI        =       6'b100100; // ok
-    parameter ESTADO_SW          =       6'b100101; //
+    parameter ESTADO_SW          =       6'b100101; // ok (TESTAR)
     parameter ESTADO_RESET       =       6'b111111; // ok
     //--------------------------------------------//
 
