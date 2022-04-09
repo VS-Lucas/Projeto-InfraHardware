@@ -1375,6 +1375,391 @@ module Unidade_Controle(
                     ESTADO = fetch;
                 end
 
+                ESTADO_LB : begin
+                    if (CONTADOR == 5'b00000) begin
+                        ESTADO = ESTADO_LB;
+                        AluSrcA = 1'b1; // <-
+                        AluSrcB = 3'b010; // <-
+                        ULA_c = 3'b000; // <-
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        MEMWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
+                    
+                        CONTADOR = CONTADOR  + 5'b00001;
+                    end 
+                    else if(CONTADOR == 5'b00001 || CONTADOR == 5'b00010 || CONTADOR == 5'b00011) begin
+                        MEMWrite = 1'b0; // <-
+                        IorD = 3'b001; // <-
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
+
+                        CONTADOR = CONTADOR  + 5'b00001;
+                    end
+                    else if(CONTADOR == 5'b00100) begin
+                        RegDst = 2'b00; // <-
+                        RegWrite = 1'b1; // <-
+                        MemtoReg = 3'b001; // <-
+                        LControl = 2'10; // <-
+                        PCWrite = 1'b0;
+                        MEMWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+
+                        ESTADO = fetch;
+                        CONTADOR = 5'b00000;
+                    end
+                end
+                ESTADO_LH : begin
+                    if (CONTADOR == 5'b00000) begin
+                        ESTADO = ESTADO_LH;
+                        AluSrcA = 1'b1; // <-
+                        AluSrcB = 3'b010; // <-
+                        ULA_c = 3'b000; // <-
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        MEMWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
+                    
+                        CONTADOR = CONTADOR  + 5'b00001;
+                    end 
+                    else if(CONTADOR == 5'b00001 || CONTADOR == 5'b00010 || CONTADOR == 5'b00011) begin
+                        MEMWrite = 1'b0; // <-
+                        IorD = 3'b001; // <-
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
+
+                        CONTADOR = CONTADOR  + 5'b00001;
+                    end
+                    else if(CONTADOR == 5'b00100) begin
+                        RegDst = 2'b00; // <-
+                        RegWrite = 1'b1; // <-
+                        MemtoReg = 3'b001; // <-
+                        LControl = 2'01; // <-
+                        PCWrite = 1'b0;
+                        MEMWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+
+                        ESTADO = fetch;
+                        CONTADOR = 5'b00000;
+                    end
+                end
+
+                ESTADO_LW : begin
+                    if (CONTADOR == 5'b00000) begin
+                        ESTADO = ESTADO_LW;
+                        AluSrcA = 1'b1; // <-
+                        AluSrcB = 3'b010; // <-
+                        ULA_c = 3'b000; // <-
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        MEMWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
+                    
+                        CONTADOR = CONTADOR  + 5'b00001;
+                    end 
+                    else if(CONTADOR == 5'b00001 || CONTADOR == 5'b00010 || CONTADOR == 5'b00011) begin
+                        MEMWrite = 1'b0; // <-
+                        IorD = 3'b001; // <-
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
+
+                        CONTADOR = CONTADOR  + 5'b00001;
+                    end
+                    else if(CONTADOR == 5'b00100) begin
+                        RegDst = 2'b00; // <-
+                        RegWrite = 1'b1; // <-
+                        MemtoReg = 3'b001; // <-
+                        LControl = 2'00; // <-
+                        PCWrite = 1'b0;
+                        MEMWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+
+                        ESTADO = fetch;
+                        CONTADOR = 5'b00000;
+                    end
+                end
+                
+
+                ESTADO_SB : begin
+                    if (CONTADOR == 5'b00000) begin
+
+                        ESTADO = ESTADO_SB;
+
+                        AluSrcA = 2'b01; // <-
+                        AluSrcB = 3'b010; // <-
+                        ULA_c = 3'b111; // <-
+
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        MEMWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
+
+                        CONTADOR = CONTADOR + 5'b00001;
+                        
+                    end
+                    else if (CONTADOR == 5'b00001 || CONTADOR == 5'b00010 || CONTADOR == 5'b00011) begin
+                        MEMWrite = 1'b0; // <-
+                        IorD = 3'b001; // <-
+
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
+
+                        CONTADOR = CONTADOR + 5'b00001;
+
+                    end
+                    
+                    else if (CONTADOR == 5'b00100) begin
+
+                        MEMWrite = 1'b1; // <-
+                        // SSIZE = 2'b10; (falta fazer?)
+
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
+
+                        CONTADOR = 5'b00000;
+                        ESTADO = fetch;
+
+                    end
+
+                end
+
+                ESTADO_SH : begin
+                    if (CONTADOR == 5'b00000) begin
+
+                        ESTADO = ESTADO_SH;
+
+                        AluSrcA = 2'b01; // <-
+                        AluSrcB = 3'b010; // <-
+                        ULA_c = 3'b111; // <-
+
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        MEMWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
+
+                        CONTADOR = CONTADOR + 5'b00001;
+                        
+                    end
+                    else if (CONTADOR == 5'b00001 || CONTADOR == 5'b00010 || CONTADOR == 5'b00011) begin
+                        MEMWrite = 1'b0; // <-
+                        IorD = 3'b001; // <-
+
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
+                        
+                        CONTADOR = CONTADOR + 5'b00001;
+
+                    end
+                    
+                    else if (CONTADOR == 5'b00100) begin
+
+                        MEMWrite = 1'b1; // <-
+                        // SSIZE = 2'b01; (falta fazer?)
+
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
+
+                        CONTADOR = 5'b00000;
+                        ESTADO = fetch;
+
+                    end
+
+                end
+
+
+                ESTADO_SW : begin
+                    if (CONTADOR == 5'b00000) begin
+
+                        ESTADO = ESTADO_SW;
+
+                        AluSrcA = 2'b01; // <-
+                        AluSrcB = 3'b010; // <-
+                        ULA_c = 3'b111; // <-
+
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        MEMWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
+
+                        CONTADOR = CONTADOR + 5'b00001;
+                        
+                    end
+                    else if (CONTADOR == 5'b00001 || CONTADOR == 5'b00010 || CONTADOR == 5'b00011) begin
+                        MEMWrite = 1'b0; // <-
+                        IorD = 3'b001; // <-
+
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
+                        
+                        CONTADOR = CONTADOR + 5'b00001;
+
+                    end
+                    
+                    else if (CONTADOR == 5'b00100) begin
+
+                        MEMWrite = 1'b1; // <-
+                        // SSIZE = 2'b00; (falta fazer?)
+
+                        PCWrite = 1'b0;
+                        RegWrite = 1'b0;
+                        IRWrite = 1'b0;
+                        AWrite = 1'b0;
+                        BWrite = 1'b0;
+                        ALU_w = 1'b0;
+                        EPCWrite = 1'b0;
+                        HiWrite = 1'b0;
+                        LoWrite = 1'b0;
+                        MDRWrite = 1'b0;
+                        LControl = 2'b00;
+
+                        CONTADOR = 5'b00000;
+                        ESTADO = fetch;
+
+                    end
+
+                end
+
                 ESTADO_SLTI: begin
                     if(CONTADOR == 5'b00000) begin
 
