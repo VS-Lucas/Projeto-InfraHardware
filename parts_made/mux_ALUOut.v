@@ -20,13 +20,7 @@ module mux_ALUOut(
     
 );
 
-    // wire [31:0] out1, out2, out3, out4, out5;
 
-    // assign out1 = (selector[0]) ? data_1 : data_0;
-    // assign out2 = (selector[0]) ? EPCOut : ext26_to_28;
-    // assign out3 = (selector[1]) ? out2 : out1;
-    // assign out4 = (selector[0]) ? mux_mem_out : sign_ext_out;
-    // assign data_out = (selector[2]) ? out4 : out3;
     always @(*) begin
         case(selector)
             3'b000 : data_out = data_0;
