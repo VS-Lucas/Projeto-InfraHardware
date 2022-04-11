@@ -10,12 +10,10 @@ module mux_shamt (
         case(selector)
             2'b00 : data_out = data_0[4:0];
             2'b01 : data_out = data_1[10:6];
-            2'b10 : data_out = data_2[4:0]; //VERIFICAR COM ANTONIO
+            2'b10 : data_out = data_2[4:0]; 
         endcase
     end
 
 
-    // assign out1 = (selector[0]) ? data_1[10:6] : data_0[4:0];
-    // assign data_out = (selector[1]) ? data_2[4:0] : out1; // PRECISA SER REVISADO A SAÍDA DO MDR QUE ENTRA NESSE MUX
 
 endmodule
