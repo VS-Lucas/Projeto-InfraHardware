@@ -19,14 +19,7 @@ module mux_Mem(
     output reg [31:0] data_out
 );
 
-    // wire [31:0] out1, out2, out3, out4, out5, out6;
 
-    // assign out1 = (selector[0]) ? data_1 : data_0;
-    // assign out2 = (selector[0]) ? reg_B : reg_A;
-    // assign out3 = (selector[1]) ? out2 : out1;
-    // assign out4 = (selector[0]) ? 32'd254 : 32'd253;
-    // assign out5 = (selector[1]) ? 32'd255 : out4;
-    // assign data_out = (selector[2]) ? out5 : out3;
     always @(*) begin
         case(selector)
             3'b000 : data_out = data_0;
