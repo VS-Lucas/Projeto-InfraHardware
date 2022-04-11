@@ -10,16 +10,7 @@ module mux_writeData(
     output reg [31:0] data_out
 );
     
-    // wire [31:0] out1, out2, out3, out4, out5, out6;
 
-
-    // assign out1 = (selector[0]) ? data_1 : data_0;
-    // assign out2 =  (selector[0]) ? data_3 : data_2;
-    // assign out3 = (selector[1]) ? out2 : out1;
-    // assign out4 =  (selector[0]) ? data_5 : data_4;
-    // assign out5 = (selector[0]) ? 32'd227 : data_6;
-    // assign out6 = (selector[1]) ? out5 : out4;
-    // assign data_out  = (selector[2]) ? out6 : out3;
 
     always @(*)begin
         case(selector)
