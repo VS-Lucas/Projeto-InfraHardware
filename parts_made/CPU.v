@@ -35,6 +35,8 @@ module CPU(
     wire [31:0] m_B_out;
     wire [31:0] M_wdata_out;
     wire [31:0] M_ALU_out;
+    wire ExtdCtrl;
+
 
 // --------------------------------------------------------------------- //
 
@@ -53,6 +55,7 @@ module CPU(
     wire LoWrite;
     wire MDRWrite;
     
+
 // ---------------------------------------------------------------------- //
 
 
@@ -60,6 +63,7 @@ module CPU(
     wire [2:0] ULA_c;
     wire [1:0] LControl;
     wire [2:0] ShiftCtrl;
+    wire [1:0] SControl;
 
 // ---------------------------------------------------------------------- //
 
@@ -94,7 +98,6 @@ module CPU(
     wire [31:0] shift_2_out;
     wire [31:0] ALU_out;
     wire [31:0] EPCOut;
-    wire [31:0] sign_ext_out;
     wire [31:0] DivHi_Out;
     wire [31:0] MultHi_Out;
     wire [31:0] M_Hi_Out;
@@ -107,6 +110,9 @@ module CPU(
     wire [4:0] M_shamt_out;
     wire [31:0] RegDesloc_out;
     wire [31:0] Shift2_26_ext_32_pc_out;
+    wire [15:0] M_ext_out;
+    wire [31:0] S_out;
+    wire [31:0] Shift_16_ext_32_out;
     
 
 
@@ -134,7 +140,7 @@ module CPU(
         mux_to_mem,
         clk,
         MEMWrite,
-        MEM_in,
+        S_out,
         MemOut
     );
 
@@ -164,7 +170,7 @@ module CPU(
         Hi_out,
         Lo_out,
         RegDesloc_out,
-        s_ext_1to32_out, //obs
+        sign_extd1_32_out, //obs
         Shift_16_ext_32_out,
         M_wdata_out
     );
@@ -212,7 +218,7 @@ module CPU(
     );
 
     sign_extd         Sign_ext_(
-        IMEDIATO,
+        M_ext_out,
         signExt_out
     );
     
@@ -226,7 +232,7 @@ module CPU(
         RS,
         RT,
         IMEDIATO,
-        PC_out,
+        PC_out[31:28],
         Shift2_26_ext_32_pc_out
     );
     
@@ -235,6 +241,7 @@ module CPU(
         B_out,
         signExt_out,
         shift_2_out,
+        MemOut,
         m_B_out
     );
 
@@ -305,7 +312,7 @@ module CPU(
         ALU_out,
         Shift2_26_ext_32_pc_out,
         EPCOut,
-        sign_ext_out,
+        signExt_out,
         mux_to_mem,
         M_ALU_out
     );
@@ -347,10 +354,27 @@ module CPU(
         M_Lo_Out,
         Lo_out
     );
+
     sign_extd1_to_32 sign_extd1_32(
         Lt,
         sign_extd1_32_out
     );
+
+    mux_ext M_ext(
+        ExtdCtrl,
+        IMEDIATO,
+        MDR_out[15:0],
+        M_ext_out
+    );
+
+    SSize SSize_(
+        SControl,
+        MemOut,
+        B_out,
+        S_out
+    );
+
+
 
     Unidade_Controle       UNI_CTRL(
         clk,
@@ -386,7 +410,9 @@ module CPU(
         LControl,
         ShiftSrc,
         AmountCrtl,
-        ShiftCtrl
+        ShiftCtrl,
+        ExtdCtrl,
+        SControl
     );
 
 endmodule
